@@ -112,10 +112,29 @@
 (defn our-find-if [pred coll]
   (if (pred (first coll))
     (first coll)
-    (our-find-if (rest coll))))
+    (recur pred (rest coll))))
 
 ; Clojure=> (our-find-if even? '(1 2 3 4))
 ; 2
 
+(defn our-length [coll]
+  (defn rec [coll acc]
+    (if (empty? coll)
+      acc
+      (rec (rest coll) (inc acc))))
+  (rec coll 0))
 
+;Clojure=> (our-length '(1 2 3))
+;3
 
+(defn triangle [n]
+  (defn tri [c n]
+    (if (zero? n)
+      c
+      (tri (+ n c) (dec n))))
+  (tri 0 n)) 
+
+;Clojure=> (triangle 1000)
+;500500
+;Clojure=> (triangle 6)
+;21
