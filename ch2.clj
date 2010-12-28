@@ -38,15 +38,15 @@
 ; Scope
 ; The below example demonstrates that Clojure is not dynamically
 ; scoped, but lexically scoped, as is common lisp.
-Clojure=> (let [y 7]
-            (defn scope-test [x]
-              (list x y)))
-#'user/scope-test
-Clojure=> (scope-test 3)
-(3 7)
-Clojure=> (let [y 5]
-            (scope-test 3))
-(3 7)
+;Clojure=> (let [y 7]
+;            (defn scope-test [x]
+;              (list x y)))
+;#'user/scope-test
+;Clojure=> (scope-test 3)
+;(3 7)
+;Clojure=> (let [y 5]
+;            (scope-test 3))
+;(3 7)
 
 ; 2.6
 ; Closures
@@ -58,12 +58,12 @@ Clojure=> (let [y 5]
 ; surrounding environment. Under lexical scope, every such use of
 ; a mapping
 ; function causes the creation of a closure"
-Clojure=> (defn list+ [coll n]
-            (map (fn [x] (+ x n))
-                 coll))
-#'user/list+
-Clojure=> (list+ '(1 2 3) 10)
-(11 12 13)
+;Clojure=> (defn list+ [coll n]
+;            (map (fn [x] (+ x n))
+;                 coll))
+;#'user/list+
+;Clojure=> (list+ '(1 2 3) 10)
+;(11 12 13)
 
 ; Make adder
 ; Note Clojure does not require setq and funcall.
@@ -71,14 +71,14 @@ Clojure=> (list+ '(1 2 3) 10)
 (defn make-adder [n]
   (fn [x] (+ x n)))
 
-Clojure=> (def add2 (make-adder 2))
-#'user/add2
-Clojure=> (def add10 (make-adder 10))
-#'user/add10
-Clojure=> (add2 5)
-7
-Clojure=> (add10 3)
-13
+;Clojure=> (def add2 (make-adder 2))
+;#'user/add2
+;Clojure=> (def add10 (make-adder 10))
+;#'user/add10
+;Clojure=> (add2 5)
+;7
+;Clojure=> (add10 3)
+;13
 
 ; Make adderb implementation from Rich Hickey
 ; http://paste.lisp.org/display/67788
@@ -89,11 +89,33 @@ Clojure=> (add10 3)
         (dosync (ref-set n x))
         (+ @n x)))))
 
-Clojure=> (def addx (make-adderb 1))
-#'user/addx
-Clojure=> (addx 1)
-2
-Clojure=> (addx 100 true)
-100
-Clojure=> (addx 3)
-103
+;Clojure=> (def addx (make-adderb 1))
+;#'user/addx
+;Clojure=> (addx 1)
+;2
+;Clojure=> (addx 100 true)
+;100
+;Clojure=> (addx 3)
+;103
+
+; 2.7
+; Local Functions
+
+(defn count-instances [obj coll]
+  (defn instances-in [coll]
+    (if (not (empty? coll))
+      (+ (if (= (first coll) obj) 1 0)
+         (instances-in (rest coll)))
+      0))
+  (map instances-in coll))
+
+(defn our-find-if [pred coll]
+  (if (pred (first coll))
+    (first coll)
+    (our-find-if (rest coll))))
+
+; Clojure=> (our-find-if even? '(1 2 3 4))
+; 2
+
+
+
