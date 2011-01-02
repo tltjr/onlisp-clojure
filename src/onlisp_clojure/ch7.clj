@@ -78,7 +78,30 @@
 
 ; 7.5 - Destructuring in Parameter Lists
 
-(defn foo [x y z]
-  (+ x y z))
+; again, from link at top
+(defmacro when-bind [bindings & body]
+    (let [[form tst] bindings]
+      `(let [~form ~tst]
+         (when ~form
+     ~@body))))
 
+;user> (when-bind [a (+ 1 2)] (println "a is:" a))
+;a is: 3
 
+; better version is included in clojure core
+;user> (when-let [[a & b] [1 2 3]] (println "b is:" b))
+;b is: (2 3)
+;nil
+
+; 7.10 Macros from Function
+
+; second is already defined in clojure core
+; it's worth noting that it is implemented as (first (next x))
+; and not (first (rest x)) as might be expected. The difference
+; between the two functions can be seen below.
+;user> (rest '(1))
+;()
+;user> (next '(1))
+;nil
+
+(defn sec [x] (second x))
