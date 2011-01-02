@@ -52,9 +52,33 @@
 ;user> `(a ~@b c)
 ;(user/a 1 2 3 user/c)
 
-; 7.3 Defining simple macros
+;7.4 Testing macroexpansion
 
-(defmacro our-when [test & body]
-    `(if ~test
-       (do
-         ~@body)))
+(defmacro our-while [test & body]
+    `(loop []
+       (when ~test
+         ~@body
+         (recur))))
+
+;Figure 7.4
+;user> (macroexpand '(our-while able laugh))
+;(loop* [] (clojure.core/when able laugh (recur))) 
+;user> (macroexpand-1 '(our-while able laugh))
+;(clojure.core/loop [] (clojure.core/when able laugh (recur)))
+;nil
+
+;Figure 7.5
+
+(defmacro mac [expr]
+  `(clojure.pprint/pprint (macroexpand-1 '~expr)))
+
+;user> (mac (our-while able laugh))
+;(clojure.core/loop [] (clojure.core/when able laugh (recur)))
+;nil
+
+; 7.5 - Destructuring in Parameter Lists
+
+(defn foo [x y z]
+  (+ x y z))
+
+
