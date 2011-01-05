@@ -129,3 +129,7 @@
 (use 'clojure.contrib.macro-utils)
 (symbol-macrolet [hi (do (println "Howdy") 1)] (+ hi 2))
 
+;user> (symbol-macrolet [hi (do (println "Howdy") 1)] (+ hi 2))
+; 
+;Howdy
+;3
