@@ -105,3 +105,27 @@
 ;nil
 
 (defn sec [x] (second x))
+
+(defmacro sec [x] `(second ~x))
+
+(defmacro noisy-second [x]
+  `(do
+     (println "Someone is taking a second!")
+     (second ~x)))
+
+(defmacro sum [args & rest]
+  `(apply #'+ (list ~@args)))
+
+;user> (sum (1 2 3 4))
+;10
+;user> (sum (1 1))
+;2
+;user> (sum ())
+;0
+
+(defmacro foo [x y z]
+  `(list ~x (list ~y ~z)))
+
+(use 'clojure.contrib.macro-utils)
+(symbol-macrolet [hi (do (println "Howdy") 1)] (+ hi 2))
+
