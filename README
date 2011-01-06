@@ -1,2 +1,9 @@
 Notes from my efforts to work through Paul Graham's "On Lisp".
 
+For enhanced readability, view the documented source at:
+
+  http://tltjr.github.com/onlisp-clojure/
+
+- documentation generated with Marginalia
+  (https://github.com/fogus/marginalia)
+
