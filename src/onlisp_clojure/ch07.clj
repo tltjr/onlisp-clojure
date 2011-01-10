@@ -56,9 +56,9 @@
 
 ;; 7.4 Testing macroexpansion
 
-(defmacro our-while [test & body]
+(defmacro our-while [tst & body]
     `(loop []
-       (when ~test
+       (when ~tst
          ~@body
          (recur))))
 
@@ -115,7 +115,7 @@
      (println "Someone is taking a second!")
      (second ~x)))
 
-(defmacro sum [args & rest]
+(defmacro sum [args & rst]
   `(apply #'+ (list ~@args)))
 
 ;; user> (sum (1 2 3 4))
